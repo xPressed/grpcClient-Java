@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Authorization</title>
+    <script>
+        function redirect() {
+            location.href="/registration";
+        }
+    </script>
+</head>
+<body style="background-color:  #dfdfe9;">
+<div class="mt-4 container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-10 col-xl-5">
+            <div style="background-color: white; border-radius: 25px">
+                <p class="text-center display-4">Authorization</p>
+
+                <form action="#" th:action="@{/perform-login}" method="post">
+
+                    <div class="mx-5 px-5 form-group form-group-lg">
+                        <label for="username" class="h4">Username</label>
+                        <input type="text" id="username" name="username" class="form-control input-lg"/>
+                    </div>
+
+                    <div class="mx-5 px-5">
+                        <label for="password" class="h4">Password</label>
+                        <input type="password" id="password" name="password" class="form-control"/>
+                    </div>
+
+                    <div th:if="${param.error}" class="mx-5 px-5" style="color: red">Wrong name or password!</div>
+
+                    <div class="d-flex justify-content-center m-3 pb-3">
+                        <button type="submit" class="btn btn-secondary btn-lg" style="background-color: #5700f7; border-color: white; border-radius: 30px">LogIn</button>
+                        <button type="button" onclick="redirect()" class="btn btn-secondary btn-lg pb-3 mx-4" style="background-color: #5700f7; border-color: white; border-radius: 30px">Registration</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
