@@ -14,8 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class DeleteController {
+    private SecurityConfiguration securityConfiguration;
+
     @Autowired
-    SecurityConfiguration securityConfiguration;
+    public void setSecurityConfiguration(SecurityConfiguration securityConfiguration) {
+        this.securityConfiguration = securityConfiguration;
+    }
 
     @GetMapping("/delete")
     public String showUpdateForm(HttpServletRequest request, Model model) {
@@ -25,7 +29,7 @@ public class DeleteController {
     }
 
     @PostMapping("/delete")
-    public String completeUpdate(User user, BindingResult bindingResult, Model model, HttpServletRequest request) {
+    public String completeUpdate(User user, Model model, HttpServletRequest request) {
         model.addAttribute("welcome", "Delete \"" + request.getUserPrincipal().getName() + "\"?");
 
         if (!securityConfiguration.encoder().matches(user.getOld(), UserRequest.get(request.getUserPrincipal().getName())[1])) {

@@ -14,11 +14,15 @@ import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
+    private SecurityConfiguration securityConfiguration;
+
     @Autowired
-    SecurityConfiguration securityConfiguration;
+    public void setSecurityConfiguration(SecurityConfiguration securityConfiguration) {
+        this.securityConfiguration = securityConfiguration;
+    }
 
     @GetMapping("/registration")
-    public String showRegistrationForm(User user, Model model) {
+    public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
         return "registration";
     }

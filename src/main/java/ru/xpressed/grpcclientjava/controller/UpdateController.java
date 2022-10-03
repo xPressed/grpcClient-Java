@@ -12,16 +12,23 @@ import ru.xpressed.grpcclientjava.server.UserRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Objects;
 
 @Controller
 public class UpdateController {
+    private SecurityConfiguration securityConfiguration;
+
     @Autowired
-    SecurityConfiguration securityConfiguration;
+    public void setSecurityConfiguration(SecurityConfiguration securityConfiguration) {
+        this.securityConfiguration = securityConfiguration;
+    }
 
     @GetMapping("/update")
     public String showUpdateForm(HttpServletRequest request, Model model) {
         model.addAttribute("welcome", "Update \"" + request.getUserPrincipal().getName() + "\"?");
-        model.addAttribute("user", new User());
+        User user = new User();
+        user.setUsername(request.getUserPrincipal().getName());
+        model.addAttribute("user", user);
         return "update";
     }
 
@@ -44,7 +51,12 @@ public class UpdateController {
             return "update";
         }
 
-        if (UserRequest.add(user.getUsername(), securityConfiguration.encoder().encode(user.getPassword()))) {
+        if (Objects.equals(user.getUsername(), request.getUserPrincipal().getName())) {
+            UserRequest.delete(request.getUserPrincipal().getName());
+            UserRequest.add(user.getUsername(), securityConfiguration.encoder().encode(user.getPassword()));
+            model.addAttribute("message", "Update Completed");
+            model.addAttribute("onload", "redirectTimer()");
+        } else if (UserRequest.add(user.getUsername(), securityConfiguration.encoder().encode(user.getPassword()))) {
             UserRequest.delete(request.getUserPrincipal().getName());
             model.addAttribute("message", "Update Completed");
             model.addAttribute("onload", "redirectTimer()");
